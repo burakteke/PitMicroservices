@@ -25,7 +25,7 @@ namespace FreeCourses.Services.Catalog.Controllers
         }
 
         // api/Course/3
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             var response = await _courseService.GetByIdAsync(id);
