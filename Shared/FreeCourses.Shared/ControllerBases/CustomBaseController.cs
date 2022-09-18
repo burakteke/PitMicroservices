@@ -13,7 +13,7 @@ namespace FreeCourses.Shared.ControllerBases
             return new ObjectResult(response)
             {
                 StatusCode = response.StatusCode
-            }
+            };
         }
     }
 }
