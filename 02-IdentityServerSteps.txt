@@ -1,0 +1,9 @@
+1) Token daðýtmaktan sorumlu bir microservice inþa edeceðiz. JWT
+2) IdentityServer kütüphanesini kullanacaðýz. Üyelik sistemi için de Identity API kullanacaðýz. DB olarak SQL Server kullanacaðýz.
+3) IdentityServer OAuth 2.0 kullanýyor.
+4) IdentityServer kurulum yapcaz. https://github.com/orgs/IdentityServer/repositories Burada hazýr templateler var. Bunlardan birini kullancaz. Bizim burada iþimize
+	yarayacak olan is4aspid olan. powershell'e  dotnet new -i identityserver4.templates yazýyoruz ve templateler yükleniyor.
+5) Services klasörü altýnda IDentityServer klasörü oluþturup, 
+	cd C:\Users\TEKEB\source\repos\PitMicroservices\IdentityServer diyerek giriyoruz.
+	dotnet new is4aspid --name FreeCourses.IdentityServer yazýyoruz powershell'e. ""dotnet run seed" sorusuna haýr diyoruz
+6) VS'de Solution altýnda "IdentityServer" klasörü oluþtuurp, existing proje olarak yeni gelen projeyi ekliyoruz.

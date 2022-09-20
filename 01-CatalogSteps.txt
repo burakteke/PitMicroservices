@@ -1,0 +1,31 @@
+1) .NET 6 SDK, VS Community 2022, VS Code kuruldu
+2) DBeaver Community (Postgre ve SQL Server için), MongoDB Compass kuruldu. Redis için bir þey kurmadýk
+3) Catalog.API Microservice oluþturuluyor. .NET Core ve MongoDB kullanýlýyor.
+4) Empty Solution altýnda Services/Catalog klasörü oluþturuldu. Bu klasör altýna FreeCourses.Services.Catalog ASP.Net Core Web API eklendi.
+5) Appsettings.json da applicationUrl http://localhost:5011 yapýldý.
+6) DB için iliþki Category 1-n Course 1-1 Feature. Bu durumda Course nesnesi içinde Category nesnesi ve CategoryId tutulacak. Ayný þekilde Feature nesnesini de tutabiliriz.
+7) Class'larý MongoDB.Driver ile oluþturduk.
+8) Shared Class Library :  3 ortak class oluþturduk. Bu class'larý service'lerde return type olarak kullancaz. Data, Issuccessful gibi proplarý doldurarark kullancaz.
+	Bunlarý Solution altýnda Shared klasörü içinde FreeCourses.Shared adlý class librar içinde koyduk.
+	Response<T>, ErrorDto ve NoContent class'larý oluþturuldu. Controller'da direkt Bu class'larý kullanarak kolayca cevaplarý dönmeyi saðlayabilcez.
+9) 3 Modelimiz için Microservice içinde Dtos klasörü içinde Dto'lar oluþturduk.
+10) AutoMapper library'i dahil ettik. Mapping klasörü içinde GeneralMapping.cs oluþturuldu ve dto-model mappingleri ve reversemappingleri yazýldý. AutoMapper program.cs'e eklendi.
+11) Database baðlantýlarý için AppSettings.json'a ekleme yapýldý (Connection string, course collection name, category collection name, database name). 
+	Her seferinde Options["ConnectionString"] þeklinde uðraþmamak adýna Settings klasörü altýnda DatabaseSettings ve IDatabaseSettings classlarý oluþturuldu.
+	Appsettings.jsondaki keylerle ayný isimlendirmeler yapýlarak proplar tanýmlandý. Map ederek Dependence injection ile bu class'ý alabilmek adýna program.cs'e ekleme yapýldý.
+12) ICategoryService ve CategoryService'ler yazýldý. Bu class'larýn içinde IMongoCollection kullanýldý. DatabaseSettings class'ý DI ile alýnarak connection elde edildi. 
+	MongoCollection üzerinde DB iþlemlerini yapan methodlar yazýldý. Bu methodlarýn dönüþ tipleri Shared'da oluþturduðumuz Response class'ý. 
+	Bu class'ýn içinde Data ve IsSuccess gibi proplar var.
+13) Ayný þekilde ICourseService ve CourseService oluþturuldu.
+14) Controllers altýnda CourseController ve CategoryController oluþturuldu. 
+	Controller'da statusCode'lara göre blok blok kod yazmaktansa bu iþi ortak yerde tek seferlik kodlayarak cevap dönmemizi saðlayacak olan yapý inþa edildi.
+	Bu yüzden CustomBaseController yazýldý. Bu Shared class library'e eklendi. Class library'de normalde .net core'a ait BaseController'dan türeyen bir class yazmaya izin yok. 
+	Çünkü bu kütüphaneler yok. Bu yüzden gittik class library'in tanýmýna .net core ile ilgili reference ekledik. Bu sayede CustomBaseController yazýp, BaseController'dan türetebildik.
+	HttpStatusCode'lara göre Controller'da farklý farklý bloklar yazmaktansa iþi ortak yerde bizim adýmýza yapacak olan CreateActionResultInstance methodunu yazdýk. 
+	Buraya Response tipinde cevabýmýzý ve statusCode'u vermek yetiyor.
+15) Kodlama bitti. Þimdi MongoDB ayaða kaldýrcaz. Container olarak ayaða kaldýrcaz. Docker'ý kuruyoruz. Portrainer'ý kuruyoruz. 
+	Portrainer install sayfasýndan önce volume oluþturma kodunu powershellde çalýþtýrdýk. Sonra run eden komutu çalýþtýrdýk. User oluþturduk
+16) MongoDb'yi container olarak ayaða kaldýrýyoruz. Portranier'ý browserdan açtýk. AppTemplates üerinden MongoDb seçip bir Name veriyoruz. 
+	AdvancedOptions'da PortMapping kýsmý boþsa host alanýna, container'daki port bilgisini yazýyoruz ve oluþturuyoruz. 
+	Buradaki port bilgisi mongodb'nin port bilgisi oldu. Ayrýca buradaki port bilgisi en baþta appsettings'e eklediðimiz connStringdeki port bilgisi.
+	Bu þekilde create ediyoruz ve mongodb'miz ayakta
