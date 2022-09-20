@@ -10,11 +10,11 @@ namespace FreeCourses.Services.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    internal class CategoryController : CustomBaseController
+    public class CategoryController : CustomBaseController
     {
         private readonly ICategoryService _categoryService;
 
-        internal CategoryController(ICategoryService categoryService, IMapper mapper)
+        public CategoryController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
         }

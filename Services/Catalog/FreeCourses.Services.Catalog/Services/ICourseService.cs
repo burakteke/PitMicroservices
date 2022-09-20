@@ -3,7 +3,7 @@ using FreeCourses.Shared.Dtos;
 
 namespace FreeCourses.Services.Catalog.Services
 {
-    internal interface ICourseService
+    public interface ICourseService
     {
         Task<Response<CourseDto>> CreateAsync(CourseCreateDto courseCreateDto);
         Task<Response<NoContent>> DeleteAsync(string id);

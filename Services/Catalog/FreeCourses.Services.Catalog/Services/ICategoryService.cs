@@ -4,7 +4,7 @@ using FreeCourses.Shared.Dtos;
 
 namespace FreeCourses.Services.Catalog.Services
 {
-    internal interface ICategoryService
+    public interface ICategoryService
     {
         Task<Response<CategoryDto>> CreateAsync(CategoryDto categoryDto);
         Task<Response<List<CategoryDto>>> GetAllAsync();
