@@ -29,3 +29,4 @@
 	AdvancedOptions'da PortMapping kýsmý boþsa host alanýna, container'daki port bilgisini yazýyoruz ve oluþturuyoruz. 
 	Buradaki port bilgisi mongodb'nin port bilgisi oldu. Ayrýca buradaki port bilgisi en baþta appsettings'e eklediðimiz connStringdeki port bilgisi.
 	Bu þekilde create ediyoruz ve mongodb'miz ayakta
+17) Appsettings.json'da default connection koyduk.

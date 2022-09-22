@@ -1,3 +1,4 @@
+A) GÝRÝÞ
 1) Token daðýtmaktan sorumlu bir microservice inþa edeceðiz. JWT
 2) IdentityServer kütüphanesini kullanacaðýz. Üyelik sistemi için de Identity API kullanacaðýz. DB olarak SQL Server kullanacaðýz.
 3) IdentityServer OAuth 2.0 kullanýyor.
@@ -7,3 +8,49 @@
 	cd C:\Users\TEKEB\source\repos\PitMicroservices\IdentityServer diyerek giriyoruz.
 	dotnet new is4aspid --name FreeCourses.IdentityServer yazýyoruz powershell'e. ""dotnet run seed" sorusuna haýr diyoruz
 6) VS'de Solution altýnda "IdentityServer" klasörü oluþtuurp, existing proje olarak yeni gelen projeyi ekliyoruz.
+7) SQLServer'i container üzerinden ayaða kaldýrýyoruz. Portrainer üzerinden apptemplates'e gel. SQLServer On Linux olaný ayaða kaldýr.
+	Name ve password belirle. Advanced settingsten portu 1433 verdik. Deploy Container.
+8) Migration iþlemlerini yapýyoruz.
+9) Projeye EfCore.SQLServer 3.1.5 (proje ile uyumlu versiyon 3.1.5) ekliyoruz. Startup dossayýnda SQLite'ý SQLServer olarak deðiþtriyoruz.
+10) program.cs düzenledik. Seed'leri sildik. Otomatik migration istiyoruz. Uygulama ayaða kalkýnc db yoksa oluþsun migraitonlara göre, uygulama ona göre ayaða kalksýn. Program.cs'yi düzenledik.
+11) Package Manager Console'u açýyoruz. IdentityServer'ý seççiyoruz combodan. add-migration initial diyoruz. sonra update-database diyoruz. DBeaver üzerinden göreiliriz artýk veriyi.
+	DBeaver üzerinden görmek için yeni baðlantý ekleme kýsmýndan localhost 1433 girerek sa ve password girerek baðlanýyoruz.
+
+Hazýr template kullandýk. Þimdi Endpointleri incelemek gerekirse; https://docs.identityserver.io/en/latest/endpoints/discovery.html
+1) Discovery Endpoint o anda token ile ilgili sunulan endpointleri listeler.
+2) Þu anda identityserver https://localhost:5001/ da çalýþýyor. Docs'tan gördüðümüz kadarýyla bunun sonuna .well-known/openid-configuration ekliyoruz. 
+	https://localhost:5001/.well-known/openid-configuration
+3) Login iþlemleri için identity server bize kendisi bir arayüz sunuyor fakat kullancý deneyimi açýsýndan login için farklý sayfaya redirect edip geri getirmek çok hoþ deðil. 
+	Bu yüzden client uygulamamýzda bu login arayüzünü saðlayacaðýz.
+	Bu þekilde postmanden istek atarak endpointleri görebiliriz.
+
+B) SIGNUP ENDPOINT
+1) Controllers klasörü ve UserController oluþturuldu. 
+2) Signup olurken email username password city gibi bilgilerin alýnabilmesi için Dtos klasörü ve SignupDto class'ý oluþturuldu.
+3) UserController'da SignUp HttpPost methodu oluþturuldu.
+4) Genel olarak tüm projelerde ortak bir response dönebilmek adýna Shared altýnda oluþturduðum Response class'ýný kullancaz. O yüzden Shared projesini IdentityServer projesine dahil ettik.
+
+C) CONFIG
+Bu aþamadan sonra Config dosyasýný kodlayacaðýz. IdentityServer'dan kimler token alacak vs onlarý kodlayacaðýz. Catalog API ve Photostock API için User Authentication'a gerek yok. Üyelik sistemi gerkemiyor buralara.
+CatalogAPI için Aud=resource_catalog ve Scope=coursecatalog_fullpermission. CatalogAPI'ya istek yapabilmek için gelen JSON Web Token (JWT)'ýn payloadýndaki Aud parametresinin resource_catalog olmasý gerekiyor.
+PhotoStock API için Aud=resource_photo_stock Scope= photo_stock_fullpermission. Bu API'ye de istek yapmak için JWT'deki Payload'daki Aud parametresinin resource_photo_stock olmasý gerekiyor.
+Yani þöyle bir payload => Aud:[resource_catalog,resource_photo_stock], Scope:[photo_stock_fullpermission, coursecatalog_fullpermission] olmasý lazým.
+SENARYO : Client'taki MVC uygulamamýz clientId ve clientSecret ile birlikte IdentityServer'a istek atarak token alcak. O token'da bu 2 microservice'mize istek yapmaya yetkili olcak.
+
+Client IdentityServer'da private key ile imzalanmýþ token alýyor. Daha sonra CatalogAPI'ye bu tokenla birlikte istek atýyor. 
+CatalogAPI elindeki IdentityServer'a ait public key ile birlikte bu gerçekten IdentityServer'a mý ait þeklinde bir kontrol yapýyor. Token'ý doðrulayabilirse isteðe uygun cevap veriyor.
+Public keyle birlikte token'ý doðrulama yapabilmek için IdentityServer'da buna ait de bir endpoint bulunuyor. "jwls_uri" => .well-wellknown/openid-cpnfiguration/jwks
+Token oluþtururken IdentityServer SignUp gibi endpointlere istek yapabilmek için de payload aud'a IdentityServer için olaný koycaz.
+
+config.cs içini düzenledik. Ýçerideki hazýr property'lerin içini düzenledik. Kendimiz ApiResources ekledik. Bunu startup'a eklememiz gerekiyor. Ekledik. //.AddInMemoryApiResources(Config.ApiResources)
+
+þimdi sýra client Crediantials (Üyelik gerekmeyen) grant type ile token alma.
+
+1) https://localhost:5001/.well-known/openid-configuration postmande buraya istek attýðýmýzda endpointleri görüntülüyoruz.
+2) https://localhost:5001/connect/token token alma endpointini görüyoruz. Þimdi buraya istek atýyoruz. POST isteði atýyoruz.
+	Body'de form-urlendcoded olarak göndercez. Ezber yapmadan dökümantasyondan (https://docs.identityserver.io/en/latest/endpoints/token.html)
+	bodyde göndermemiz gereken propertyleri görüyoruz. Dolduraraak gönderiyoruz. (client_id = WebMvcClient | client_secret = secret | grant_type = client_credentials)
+	Bize direkt token'ý dönüyor.
+
+
+

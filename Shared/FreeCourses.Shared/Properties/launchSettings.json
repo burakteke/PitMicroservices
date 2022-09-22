@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FreeCourses.Shared": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:58927;http://localhost:58928"
+    }
+  }
+}
