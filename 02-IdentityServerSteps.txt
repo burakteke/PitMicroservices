@@ -53,4 +53,19 @@ config.cs içini düzenledik. Ýçerideki hazýr property'lerin içini düzenledik. Ken
 	Bize direkt token'ý dönüyor.
 
 
+D) SIGNUP ENDPOINT TEST
+1) Þu anda UserController'da herhangi bir Authorize attribute'u yok. Bu yüzden Signup methodu herkese açýk, koruma altýna almamýz gerekiyor.
+	services.AddLocalApiAuthentication ekliyoruz. UserController'ý korumak için üzerine "Authorize(LocalApi.PolicyName)" ekliyoruz. 
+	PolicyName'imiz IdentityServerAccessToken (Policy ismi). Bu sayede AddLocalApiAuth sayesinde de scope sayesinde koruma gerçekleþiyor.
+	Burada claim bazlý bir yetkilendirme var. 
+	Senaryo tokenýmýz içerisindeki scope'ta IdentityServerApi yazýyor. IdentityServerAccessToken ve AddLocalApiAuth bu scope'u kontrol ediyor. Bu sayede korumuþ olabiliyoruz.
+2)Configure içine app.UseAuthentication ekliyoruz.
+3) UserController Route(""api/[controller]/[action]) yaptýk. Methodlar gelecek çünkü.
+TEST Senaryo = TOKEN OLUÞTURMADAN http://localhost:5001/api/user/signup 'a Body raw içinde
+	"UserName":"burak17",
+	"Email":"burak17@gmail.com",
+	"Password":"Password12*",
+	"City":"Çanakkale" JSON formatlý þekilde istek atýyoruz postmanden. Token olmadýðý için 401 Unauthorized döner cevap olarak.
 
+	O yüzden önce connect/token dan token alýp ardýndan signup isteðindeki "Authorization" sekmesinden OAuth 2.0 seçerek token'ý yapýþtýrýp istek attýðýmýzda cevabý alabiliyoruz.
+	DBeaver üzerinden baktýðýmda da kayýtlarý görebiliyorum.
