@@ -14,3 +14,20 @@ Bize Resource owner credentials dönebilecek olan eklemeleri yapacaðýz. Bunun içi
 4) Bu bilgileri hangi client'lar görecek diye ayarlama yapmak için Clients property'sine ekleme yapýyoruz. Bu yeni ekleyeceðimiz client'ýn akýþ tipi Resource Owner olacak.
 
 POSTMAN TEST
+
+1) url = http://localhost:5001/connect/token
+2) body(form-urlencoded) =
+	clientId = WebMvcClientForUser,
+	client_secret = secret,
+	grant_type = password,
+	username = burak17@gmail.com,
+	password = Password12*
+
+
+Son olarak GetUser endpointi oluþturacaðýz. Token yollayýp user bilgilerini alacaðýz. Resource owner credentials token'ý aldýðýmýzda dönen token içindeki sub kullanýcýnýn id'sidir.
+Bu bilgiyi kullanarak kullanýcý bilgerini db'den çekip döneceðiz.
+
+1) UserController'da HttpGet => GetUser methodu ekliyoruz.
+POSTMAN TEST
+Önce resource owner tokený alýyoruz.
+Bu tokenla birlikte api/user/getuser

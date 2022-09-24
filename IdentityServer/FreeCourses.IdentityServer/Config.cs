@@ -59,7 +59,8 @@ namespace FreeCourses.IdentityServer
                         IdentityServerConstants.StandardScopes.OpenId, //mutlaka olmalı.
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess, //refresh token üreteceğimizden dolayı ekledik. offline access sayesinde kullanıcı refresh token yollayıp yeni token alabiliyor.token expire oldukça sürekli email password girmek zorunda kalmasın diye
-                        "roles"
+                        "roles",
+                        IdentityServerConstants.LocalApi.ScopeName
                     }, //hangi izinler veriliyor.
                     AccessTokenLifetime= 1*60*60, // Token ömrü 1 saat
                     RefreshTokenExpiration = TokenExpiration.Absolute, //refresh token süresini uzatmaya izin vermiyor.
