@@ -1,0 +1,16 @@
+Order, Payment, Discount, Basket gibi API'lere kullanýcý bilgisi içeren tokenlar gerekmektedir. 
+	Buna resource owner credentials (Baþka yerlerde resource owner password þeklinde de geçiyor. Bu daha doðru gibi sanki. Bu ifadeyi görürsen þaþýrma) denir. 
+	Kullanýcý bilgisi içermeyen tokenlara client credentials denir.
+
+TOKEN connect/token endpointinden alýnýyor. Buraya sadece clientId ve clientsecret ile istek attýðýmýz zaman bize ClientCredentials veriyor.
+Bu isteðe ayrýca email ve password bilgisi de eklersek, kullanýcý eþleþtiði ve parola doðru olduðu durumda resource owner credentials dönüyor.
+
+Bize Resource owner credentials dönebilecek olan eklemeleri yapacaðýz. Bunun için IResourceOwnerPasswordValidator'ý kullancaðýz.
+
+1) IdentityServer da /Services altýnda IdentityResourceOwnerPasswordValidator oluþturduk. Yukarýdaki interface miras alýp methodunu implement ediyoruz.
+2) Bu resource owner credentials için bir de startup'a ekleme yapmak gerekiyor.
+	builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
+3) Token alýndýðý zaman kullanýcýnýn hangi bilgilerine eriþilecek bunlarý belirlemek için Config içinde IdentityResources property'si içinde ayarlama yapýyoruz.
+4) Bu bilgileri hangi client'lar görecek diye ayarlama yapmak için Clients property'sine ekleme yapýyoruz. Bu yeni ekleyeceðimiz client'ýn akýþ tipi Resource Owner olacak.
+
+POSTMAN TEST

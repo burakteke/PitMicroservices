@@ -4,6 +4,7 @@
 
 using IdentityServer4;
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 
 namespace FreeCourses.IdentityServer
@@ -18,10 +19,13 @@ namespace FreeCourses.IdentityServer
                 new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
             };
         public static IEnumerable<IdentityResource> IdentityResources =>
-                   new IdentityResource[]
-                   {
-                
-                   };
+                new IdentityResource[]
+                {
+                    new IdentityResources.Email(), //claimler
+                    new IdentityResources.OpenId(), //claimler
+                    new IdentityResources.Profile(), //claimler
+                    new IdentityResource(){Name="roles", DisplayName = "Roles", Description = "Kullanıcı Rolleri", UserClaims = new []{"role"} }
+                };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
@@ -42,7 +46,26 @@ namespace FreeCourses.IdentityServer
                     ClientSecrets = {new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials, //Üyelik gerektirmeyen izinler için tanımlandı 
                     AllowedScopes = { "catalog_fullpermission", "photo_stock_fullpermission", IdentityServerConstants.LocalApi.ScopeName }
-                }
+                },
+                new Client
+                {
+                    ClientName = "Asp.Net Core MVC",
+                    ClientId = "WebMvcClientForUser",
+                    AllowOfflineAccess = true,
+                    ClientSecrets = {new Secret("secret".Sha256()) },
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword, //üyelik gerektiren izinler için tanımlandı 
+                    AllowedScopes = { 
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.OpenId, //mutlaka olmalı.
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess, //refresh token üreteceğimizden dolayı ekledik. offline access sayesinde kullanıcı refresh token yollayıp yeni token alabiliyor.token expire oldukça sürekli email password girmek zorunda kalmasın diye
+                        "roles"
+                    }, //hangi izinler veriliyor.
+                    AccessTokenLifetime= 1*60*60, // Token ömrü 1 saat
+                    RefreshTokenExpiration = TokenExpiration.Absolute, //refresh token süresini uzatmaya izin vermiyor.
+                    AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60)- DateTime.Now).TotalSeconds, //refresh token ömrü 60 gün
+                    RefreshTokenUsage = TokenUsage.ReUse //refresh token tekrar kullanılabilsin.
+                },
             };
     }
 }

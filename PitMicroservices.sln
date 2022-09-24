@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Catalo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B87FF98B-A8FD-493E-8F3E-23FD85B77CD3}"
 	ProjectSection(SolutionItems) = preProject
-		02-IdentityServerSteps.txt = 02-IdentityServerSteps.txt
-		Ports.txt = Ports.txt
 		01-CatalogSteps.txt = 01-CatalogSteps.txt
+		02-IdentityServerSteps.txt = 02-IdentityServerSteps.txt
+		03-CatalogAPIkoruma.txt = 03-CatalogAPIkoruma.txt
+		04-ResourceOwnerGrantType.txt = 04-ResourceOwnerGrantType.txt
+		Ports.txt = Ports.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{43CBB3C6-70A3-41EA-BF59-827BAAA72FEC}"

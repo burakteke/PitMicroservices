@@ -1,0 +1,13 @@
+1) Token olarak JWT kullanýyoruz. Projeye JwtBearer eklenir.
+2) Startup tarafýna geliyoruz. services'larýn en altýna services.AddAuth methodunu ekleyerek bir schema veriyoruz. Herhangi bir schema olabilir.
+3) Auth'a dair appsettings json'a token daðýtmaktan sorumlu url'i veriyoruz. Þu ana kadar her yere localhost yazarak gidiyoruz ama sýkýntý yok Dockerize ederken buralar dinamik olacaðý için
+	Bunlarý dokerda dinamik tutabilmek adýna localhost yazdýðýmýz yerlerin hep appsettings.jsonda olmasý lazým.
+4) Program.cs'ye AddAuthentication eklerken Authority parametresi token'ý alacaðýmýz url. Bu sayede private key - public key doðrulamasý yapýalbiliyor.
+	Bir de token'lara scope koymuþtuk. Bu scope'u yazmamýz gerekiyor. Token'la istek geldiðinde scope'dan yakalayarak izni verecek.
+	Bu scope'u identityserver'da resource_catalog olarak tanýmlamýþtýk. Bunu buraya da ekliyoruz.
+5) Program.cs'e bir de AddControllers içine "(opt =>AuthorizeFilter"" ekliyoruz.
+6) app.UseAuthorization üstüne app.UseAuthentication ekliyoruz.
+
+Bu ayarlardan sonra artýk uygulamamýz token ve scope dahilinde koruma altýnda.
+
+7) http://localhost:5011/api/categoriy 'e istek attýðýmýzda 401 UnAuth alýrýz. Token alýp istek atarsak sonuç alýrýz.
