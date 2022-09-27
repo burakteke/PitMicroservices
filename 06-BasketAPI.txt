@@ -1,0 +1,31 @@
+Kullanýcýnýn sepete ekleme, silme, güncelleme iþlemlerinden sorumlu olcak.
+Sepet çok dinamik bir yapý. Bu yüzden Read&Write iþlemlerinin hýzlý olmasý lazým.
+Burada NoSQL veritabaný kullanýlabilir MongoDB gibi ya da fiziksel hafýza yerine Memory'de tutabileceðimiz Redis'te tutabiliriz.
+
+REDIS kullanacaðýz. => Basket Microservice + Redis (Redise baðlanmak için kütüphane = StackExhange.Redis)
+
+A) PROJENÝN OLUÞTURULMASI
+	Services/Basket altýna ASP.NET CORE WEB API oluþturuyoruz. 
+	References'a Shared'ý ekliyoruz.
+	Portunu 5013 ayarlýyoruz.
+	StackExchange.Redis paketini yüklüyoruz.
+
+B) DTO'larýn oluþturulmasý
+	BasketDTO oluþturuldu. Sepetin kendisini tutacak.
+	BasketItemDTO oluþturuldu. Sepetteki ürün bilgisi ismi fiyatý adet vs. 
+	Basket 1-n BasketItem
+
+C) Appsettings ayarlarý (Redise baðlanacaðýmýz hostu ve portu belirteceðiz.)
+	Appsettings > Host ve Port (Host þu anlýk localhost yazacaðýz ama dockerize ettiðimiz zaman zaten ezeceðiz bu bilgiyi.)
+	(Localhost ifadesini appsettings dýþýna yazmamak gerekiyor. Çünkü dockerize ettiðimizde bu bilginin otomatik ezilebilmesi için appsettingste durmasý gerekiyor.)
+	RedisSettings class (options pattern) Configuration'larý class üzerinden okuyacaðýz.
+	
+	Appsetttings içerisine RedisSettings eklendi.
+	Settings klasörü altýnda RedisSettings class'ý oluþturuldu ve appsettingsteki configuration keyleri ile map olacak þekilde propertyler yazýldý.
+	Bu map'i program.cs'te ekliyoruz. (Services.Configure<RedisSettings>)
+
+D) IBasketService Sepete CRUD iþlemleri için interface'i Services altýnda IBasketService eklendi. Methodlar yazýldý.
+E) RedisService class'ýný oluþturduk. Redis ile baðlantý kurmaktan sorumlu class burasý. Exchange.Redis'i kullanarak bu class'ý dolduruyoruz.
+	Burada parametre olarak db alýyoruz. Redis'te çok fazla veritabaný var. Bunlarýn hepsi memory'de tutuluyor fakat birbirinden ayrýlýyor. 
+	1.veritabanýný prodda kullan. 2.veritabanýný test için kullan gibi ayrýmlar yapýlabiliyor. Bu yüzden hangi db istediðimizi parametre ile geçiyoruz GetDB methoduna.
+	program.cs'e Singleton olarak tanýmlýyoruz. Program ayaða kalkýnca ayaða kalksýn ve tek nesne üzerinden devam edelim diye. Services.AddSingleton ekledik ve func doldurduk.
