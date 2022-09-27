@@ -1,0 +1,34 @@
+Bu servisimizde veritabaný olmayacak. Klasörlerimizde static olarak tutacaðýz.
+2 endpoint olcak fotoðraf kaydetme ve fotoðraf çekme
+
+1) Services/PhotoStock klasörü altýnda ASP.NET Core Web API 6.0 projesi oluþturuyoruz.
+2) Default olarak ASP.NET Core Web API static dosyalarýný yayýnlayamaz.
+	wwwroot/photos klasörlerini oluþturduk. Burada tutacaðýz.
+	startupta UseStaticFiles methodunu ekliyoruz.
+3) CatalogAPI 50112De çalýssýn demiþtik. Bu service 5012'de çalýþsýn. LauncSettings'ten ayarlýyoruz.
+4) Dtos altýnda PhotoDto.cs oluþturuldu.
+5) Þimdi PhotoController/PhotoSave endpointini oluþturuyoruz.
+	Task<IActionResult> PhotoSave(IFormFile photo, CancellationToken cancellationToken) imzalý Action'ýmýz var.
+	cancellationToken alma sebebimiz; örneðin kaydetme iþlemi 20sn sürüyo diyelim. 
+	Photo kaydetme iþlemi bitmeden, endpointi çaðýran yer iþlemi iptal ederse, photo kaydetme iþlemi de sonlansýn diye alýyoruz.
+	Ayrýca photo kaydetme iþlemi bitmeden tarayýcý kapanýrsa; bunu da algýlýyoruz cancellationToken sayesinde ve kaydetmeyi durduruyoruz.
+	Burda biz istek atarken parametre olarak geçmiyoruz veya isteði biz manuel durdurmuyoruz. CancellationToken kendisi hallediyor bunlarý.
+6) Shared classLibrary'i referencený ekliyoruz ve PhotosController'ý CustomBaseController'dan türetiyoruz. PhotoSave methodunu yazýyoruz.
+7) PhotoDelete methodunuz yazýyoruz.
+8) Þimdi PhotoStockAPI'yi koruma altýna alacaðýz.
+	Authentication.JwtBearer paketini ekliyoruz projeye.
+	AppSettings.json'ýmýza identityServer'ýmýz URL'ini ekliyoruz.
+	program.cs'ye builder.Services.AddAuthentication'ý ekliyoruz. Bunun içinde Audience olarak "resource_photo_stock gelmeli". Authority identyServerUrl de olcak.
+	program.cs'ye en alta app.UseAuthentication'ý ekliyoruz.
+	program.cs'ye authorizefilter'ý ekliyoruz.
+9) TEST POSTMAN
+	
+	PhotoSave
+
+	HTTPPost: http://localhost:5012/api/photos
+	Body(form-data): key = photo (ayný hücre içindeki combo'dan File seçilir.) value hücresine direkt selectFiles geliyor zaten. Seçilir.
+	ÝSteði sadece bu þekilde atarsak 401  hatasý alýrýz. Ýsteði Client Credentials'lý bir token'la yollamak gerkeiyor.
+
+	PhotoDelete
+	HttpGet: http://localhost:5012/api/photos?photoUrl=268bc9b1-4f3f-4df4-bedf-d67eeee0a2cc.jpg
+	Bunu da tokenla yolluyoruz.
