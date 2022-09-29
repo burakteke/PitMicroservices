@@ -68,4 +68,12 @@ J) BasketAPI'yi koruma altýna alýyoruz.
 		""JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");"" ekliyoruz.
 		Bunun anlamý "sub" keyini map'leme, backend'e de sub olarak gelsin.
 
+K) TEST ÝÞLEMLERÝ
+	1) POSTMAN GET : http://localhost:5013/api/baskets (token'larý da ekledik buradaki her test için)
+
+	2) POSTMAN POST : http://localhost:5013/api/baskets 
+			body = raw(json)
+			{
+				
+			}
 		
