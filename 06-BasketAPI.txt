@@ -40,3 +40,14 @@ G) ISharedIdentityService:SharedIdentityService(Shared Library'e ekleyeceðiz.) B
 	IHttpContextAccessor'ý kullanaiblmek için gittik Basket projesinin program.cs'indeki Service'lere ekliyoruz.
 	Basket'in program dosyasýna eklediðimiz için artýk BasketService'ten GetUserId'yi çaðýrdýmýz zaman direkt Token içindeki Sub bilgisini alabileceðiz.
 	Bir de Basket apiden SharedIdentityService'e DI ile eriþebilmek için yine Basket.Program.cs'ye AddScoped olarak SharedIdentityService'i ekliyoruz.
+
+H) Program.cs'e service'lere DI için BasketService'i ekliyoruz.
+	BasketsController'ý oluþturuyoruz.
+
+I) container'lardaki "mongodb" isimli container'ý catalog.API kullanýyor. Bunun ismini catalogdb olarka deðiþtirmek için silip tekrar kuruyoruz. (host portunu 27017 yaptýk yine)
+	
+	Redis'i container olarak ayaða kaldýrýyoruz.
+	Portrainer üzerinden AppTemplates'den redis'i seçiyoruz.
+	appsettings.json'da port'u 6379 vermiþtik. container'da da onu veriyoruz.
+
+J) BasketAPI'yi koruma altýna alýyoruz.

@@ -15,8 +15,4 @@
     <ProjectReference Include="..\..\..\Shared\FreeCourses.Shared\FreeCourses.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
