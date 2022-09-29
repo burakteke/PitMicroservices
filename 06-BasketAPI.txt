@@ -29,3 +29,14 @@ E) RedisService class'ýný oluþturduk. Redis ile baðlantý kurmaktan sorumlu class
 	Burada parametre olarak db alýyoruz. Redis'te çok fazla veritabaný var. Bunlarýn hepsi memory'de tutuluyor fakat birbirinden ayrýlýyor. 
 	1.veritabanýný prodda kullan. 2.veritabanýný test için kullan gibi ayrýmlar yapýlabiliyor. Bu yüzden hangi db istediðimizi parametre ile geçiyoruz GetDB methoduna.
 	program.cs'e Singleton olarak tanýmlýyoruz. Program ayaða kalkýnca ayaða kalksýn ve tek nesne üzerinden devam edelim diye. Services.AddSingleton ekledik ve func doldurduk.
+
+F) BasketService class'ýný yazýyoruz. IBasketService'den miras alarak. RedisService kullanarak db iþlemlerini yapýyoruz.
+G) ISharedIdentityService:SharedIdentityService(Shared Library'e ekleyeceðiz.) Bu service'in amacý token içinden UserId'yi çekcek.
+	Token içindeki sub field'ý Kullanýcý'nýn id'si oluyor. Bu token hangi kullanýcya ait onu belirtiyor.
+
+	SharedLibrary içinde Services altýna eklendiler.
+	HttpContext içindeki User içinden Claimler geliyor. Claim = kullanýcý hakkýnda tutulan data denilebilir.
+	SharedLibrary'de claimlere eriþebilmek için class'ýn içinde IHttpContextAccessor kullanmak gerekiyor. 
+	IHttpContextAccessor'ý kullanaiblmek için gittik Basket projesinin program.cs'indeki Service'lere ekliyoruz.
+	Basket'in program dosyasýna eklediðimiz için artýk BasketService'ten GetUserId'yi çaðýrdýmýz zaman direkt Token içindeki Sub bilgisini alabileceðiz.
+	Bir de Basket apiden SharedIdentityService'e DI ile eriþebilmek için yine Basket.Program.cs'ye AddScoped olarak SharedIdentityService'i ekliyoruz.
