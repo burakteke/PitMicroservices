@@ -51,3 +51,12 @@ I) container'lardaki "mongodb" isimli container'ý catalog.API kullanýyor. Bunun 
 	appsettings.json'da port'u 6379 vermiþtik. container'da da onu veriyoruz.
 
 J) BasketAPI'yi koruma altýna alýyoruz.
+	* JwtBearer kütüphanesini dahil ediyoruz Nuget
+	* services.AddAuthentication'ý ekliyoruz.
+	* Bu API'nin önceki oluþturduðumuz apilerden farký ResourceOwnerPassword type JWT gerektiriyor olmasý. Bu yüzden token'da mutlaka "Sub" type'ýný bekliyoruz.
+		Bu yüzden program.cs'e "var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();" satýrý ekledik.
+	* Önceki API'lerde AddController içinde ""opt.Filters.Add(new AuthorizeFilter());"" satýrýný ekliyoduk. 
+		Bu sefer elimizde direkt policy var. Auth. olmuþ bir user gerekiyor. Bu yüzden "opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));" ekliyoruz.
+	* Bir de useAuthentication ekliyoruz.
+
+		
