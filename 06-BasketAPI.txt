@@ -58,5 +58,14 @@ J) BasketAPI'yi koruma altýna alýyoruz.
 	* Önceki API'lerde AddController içinde ""opt.Filters.Add(new AuthorizeFilter());"" satýrýný ekliyoduk. 
 		Bu sefer elimizde direkt policy var. Auth. olmuþ bir user gerekiyor. Bu yüzden "opt.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));" ekliyoruz.
 	* Bir de useAuthentication ekliyoruz.
+	* BasketAPI için IdentityServer'a scope eklememiþtik. 
+		IdentityService config dosyasýnda yeni scope ekledik basketapi için, yeni ApiResource ekledik.
+		Yeni eklediðimiz ApiResource'u ForUser olan client scope'una ekliyoruz.
+		Yeni eklediðimiz resource_basket'i BasketAPI'de service.AddAuthentication içindeki Audince'a veriyoruz.
+		basket appsettings.json'a IdentityServerURL'i ekledik
+	* Son olarak bize Token içindeki Sub bilgisi lazým. Ýstek atýnca backend'e key olarak "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier" þeklinde geliyor.
+		Biz bunun "sub" olarak gelebilmesi için program.cs'e 
+		""JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");"" ekliyoruz.
+		Bunun anlamý "sub" keyini map'leme, backend'e de sub olarak gelsin.
 
 		
