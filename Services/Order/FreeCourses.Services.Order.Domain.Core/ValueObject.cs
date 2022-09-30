@@ -8,66 +8,44 @@ namespace FreeCourses.Services.Order.Domain.Core
 {
     public abstract class ValueObject
     {
-        private int? _requestedHashCode;
-        private int _Id;
-
-        public virtual int Id
+        protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
-            get => _Id;
-            set => _Id = value;
+            if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+            {
+                return false;
+            }
+            return ReferenceEquals(left, null) || left.Equals(right);
         }
 
-        public bool IsTransient()
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
-            return this.Id == default(Int32);
+            return !(EqualOperator(left, right));
+        }
+
+        protected abstract IEnumerable<object> GetEqualityComponents();
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            var other = (ValueObject)obj;
+
+            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
         public override int GetHashCode()
         {
-            if (!IsTransient())
-            {
-                if (!_requestedHashCode.HasValue)
-                    _requestedHashCode = this.Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
-
-                return _requestedHashCode.Value;
-            }
-            else
-                return base.GetHashCode();
+            return GetEqualityComponents()
+             .Select(x => x != null ? x.GetHashCode() : 0)
+             .Aggregate((x, y) => x ^ y);
         }
 
-        public override bool Equals(object obj)
+        public ValueObject GetCopy()
         {
-            if (obj == null || !(obj is Entity))
-                return false;
-
-            if (Object.ReferenceEquals(this, obj))
-                return true;
-
-            if (this.GetType() != obj.GetType())
-                return false;
-
-            Entity item = (Entity)obj;
-
-            if (item.IsTransient() || this.IsTransient())
-                return false;
-            else
-                return item.Id == this.Id;
-        }
-
-        public static bool operator ==(Entity left, Entity right)
-        {
-            if (Object.Equals(left, null))
-                return (Object.Equals(right, null)) ? true : false;
-            else
-                return left.Equals(right);
-        }
-
-        public static bool operator !=(Entity left, Entity right)
-        {
-            if (Object.Equals(left, null))
-                return (Object.Equals(right, null)) ? true : false;
-            else
-                return left.Equals(right);
+            return this.MemberwiseClone() as ValueObject;
         }
     }
 }

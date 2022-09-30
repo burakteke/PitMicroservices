@@ -20,3 +20,20 @@ Anemic Domain Model'de ise sadece property'ler var. Klasik bildiðimiz yöntem. bu
 	IAggregateRoot interface'i oluþturuldu.
 	Entity Class'ý içerisine equals tarzý karþýlaþtýrma methodlarýmýzý yazdýk.
 	Ayný methodlarý ValueObject class'ýna da ekledik
+
+3) Order (Entity, IAggregateRoot), OrderItem (Entity), Address (ValueObject) classlarýný yazýyoruz.
+	Bu mimaride domain üzerinden gidiyoruz. Bu yüzden kimse kendi baþýna hareket edemiyor. Bu yüzden OrderItem eklemek istediðimiz zaman Order üzerinden ekleyeceðiz.
+
+	OrderAggregate/Address.cs oluþturuldu. Dýþarýdan müdahale olmasýn diye proplarýn setleri private yapýldý. constructor ile deðer alcaz.
+	Address ValueObject. Order içerisinde yer alcak fakat db'de bir tablo olarak yer almayacak ama kolonlarý Order tablosuna eklencek. 
+	Böyle address gibi tiplere Owner Entity Type deniyor. EFCore yükledikten sonra Address class'ý [Owner] ile iþaretlenir.
+
+	OrderAggregate/OrderItem.cs oluþturuldu. proplar private set yapýldý. ctor ile deðer alcaz. Bu deðerleri update için UpdateOrderItem methodu eklendi. 
+	Miras olarak Entity alýyor. DDD'den dolayý.
+
+	OrderAggregate/Order.cs oluþturuldu. Entity classýndan ve IAggregateRoot interface'inden miras alýyor.
+	orderItems field olarak private readonly ekledik. Property'sini IReadOnlyCollection yaptýk. Burada DDD'den dolayý direkt Order üzerinden ekleme yapmasýný istemiyoruz.
+	Ekleme yapýlacaksa benim yazdýðým method üzerinden ekleme yapýlmalý. 
+	Çünkü ekleme yapýlan method benim kontrolümde olacak ve eklemenin benim kontrolüm altýndaki methoddan yapýlmasý gerek.
+	proplarý private set yapýp ardýndan ctor yazdýk.
+	orderitem eklemek için method yazdýk
