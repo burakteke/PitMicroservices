@@ -2,6 +2,7 @@ Projede IdentityServer kullanýlýyor. (Client Credentials ve ResourceOwnerPasswor
 API'ler .net core ile geliþtiriliyor.
 Hem iliþkisel veritabaný hem de NoSQL veritabaný kullanýlýyor.
 Microservice mimarisi kullanýlýyor.
-SQLServer,Redis ve MongoDB docker'da container olarak ayaða kaldýrýldý.
+SQLServer,Redis, PostgreSQL ve MongoDB docker'da container olarak ayaða kaldýrýldý.
 Postman ile identityServer ve API testleri yapýlýyor.
-OrderAPI'de DDD kullanýlýyor.
+OrderAPI'de DDD ve CQRS kullanýlýyor.
+Dapper kullanýldý (Discount)

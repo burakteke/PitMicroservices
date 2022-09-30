@@ -1,0 +1,22 @@
+DDD Model 
+DDD Model içinde hem property'ler bulunur hem de Behavior(business rule)lar bulunuyor.
+Örneðin sipariþteki tutar 3000'den fazlaysa þunu yap gibi kurallar ilgili entity içinde method olarak tanýmlanýr.
+
+Anemic Domain Model
+Anemic Domain Model'de ise sadece property'ler var. Klasik bildiðimiz yöntem. burada behaviorlar business layer'da oluyor.
+
+1) PROJENÝN OLUÞTURULMASI
+	Services altýnda 
+		Presentation Layer için ASP.NET CORE API projesi ekledik. (Order.API)
+		Application Layer için Class Library oluþturduk (Order.Application)
+		Domain Layer için Class Library oluþturduk (Order.Domain)
+		Yine Domain Layer için ama bu sefer (Aggregate vs için) class library oluþturduk (Order.Domain.Core)
+		Infrs. Layer için Class library oluþturduk. (Order.Infrastructure)
+
+		Order.API portu 5015 olcak þekilde ayarladýk.
+
+2) Domain.Core'un geliþtirilmesi Entity, ValueObject ve IAggregateRoot. Bunlar base class'larýmýz. Domain'deki class'lar bunlardan miras alacak.
+	Entity ve ValueObject class'larý oluþturuldu.
+	IAggregateRoot interface'i oluþturuldu.
+	Entity Class'ý içerisine equals tarzý karþýlaþtýrma methodlarýmýzý yazdýk.
+	Ayný methodlarý ValueObject class'ýna da ekledik

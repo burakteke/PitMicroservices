@@ -1,0 +1,46 @@
+Kullanýcý ile alakalý indirim kuponu iþlemleri saðlayan servis.
+PostgreSQL ve Dapper (Micro ORM) kullanýldý.
+Normalde bu API için NoSQL veritabaný daha uygun. Projede veritabaný örneðini çeþitlendirebilmek adýna Postgre kullnýlýyor. Yoksa bu proje için iliþkisel db gereksiz.
+
+Bir de projeyi hýzlý tamamlayabilmek adýna CatalogAPI'de yaptýðýmýz gibi Dto'lar oluþturup mapleme iþlemlerini bu service'te yapmayacaðýz. 
+Normalde yapýlmasý gerekiyor fakat bu proje farklý þeyler öðrenme amaçlý olduðu için, hýzlandýrmak adýna dto'larý bu projede kullanmadýk.
+
+DAPPER (Hafif, Hýzlý, Kullanmasý Basit, Performans artýþý, Herhangi bir db ile kullanýlabilir, Basitleþtirilmiþ API)
+EF Core'dan 2 farký var. Dapper'da SQL cümlelerini kendimiz yazarýz. Track özelliði yok memory'de veri tutulmaz.
+Dapper'dan veri döndükten sonra entity'e maplemeyi otomatik yapýyor.
+
+A) GÝRÝÞ
+
+port bilgisini 5014 yaptýk. SharedLibrary'e reference verdik.
+Nugetten Dapper.Contrib ekledik. Neden düz Dapper'ý eklemedik. Çünkü Contrib olanda helper classlar da var.
+Models/Discount.cs eklendi. Postgre maplemesi için de Attribute ekliyoruz [Dapper.Contrib.Extensions.Table("discount")]
+Services/IDiscountService oluþturuldu.
+Services/DiscountService oluþturuldu. Postgre kullandýðýmýz için Npgsql library ekledik.
+
+B) DB'yi CONTAINER AYAÐA KALDIR VE TABLE OLUÞTUR
+
+discountdb (PostgreSql) container olarak ayaða kaldýrýyoruz. Portrainer'da templatelerden postgre (linux olaný) seçiyoruz.
+discountdb | admin | Password12* | 5432
+appsettings.json'a ConnectionStrings bloðunu ekkliyoruz.
+DBeaver'dan veritabaný oluþtu mu diye baðlantý oluþturarak kontrol ediyoruz.
+DBeaver'a baðlandýktan sonra discountdb adýnda database ve ardýndan discount tablosunu oluþturduk 
+	create table discount(	Id serial primary key,	UserId varchar(200) not null,	Rate smallint not null,	Code varchar(50) not null,	CreatedDate timestamp not null default CURRENT_TIMESTAMP)
+
+C) API'YI KORUMA ALTINA ALMA
+IdentityService configte resource, scope ve client'a sýrasýyla ekleme yapýldý. discount_fullpermission
+Discount JwtBearer ekliyoruz.
+BasketAPI'de yaptýðýmýz þekilde;
+requireAuthorizePolicy ve JwtSecurityTokenHandler satýrlarýný ekledik.
+Discount program.cs'e service.AddAuthenticaton kodlarýný ekliyoruz. Ýçindeki Audince'e discount_fullpermission veriyoruz. appsettingsjson'a IdentityServerURL ekliyoruz.
+AddControllers içine AuthorizeFilter(requireAuthorizePolicy) eklenir.
+app.UseAuthentication();
+
+D) CONTROLLERS
+Bu API'de de token'daki userId bilgisine ihtiyacýmýz olacak. Bu bilgiyi shared'dan ortak bir yerden çekebilmek için class yazmýþtýk. 
+Bunu kullanabilmek adýna program.cs'e builder.Services.AddHttpContextAccessor(); ekliyoruz.
+Ayrýca ortak Service'i DI olarak kullanabilmek için AddScoped olarak ISharedIdentityService'ý ekliyoruz.
+Bir de kendi discountservice'imizi DI olarak ekliyoruz program.cs'e
+
+Controllers/DiscountsController eklendi.
+
+E) POSTMAN'de test edildi.

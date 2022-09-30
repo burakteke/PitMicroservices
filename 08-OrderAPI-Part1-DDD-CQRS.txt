@@ -1,0 +1,29 @@
+ORDER API'de DDD ve CQRS pattern kullanacaðýz.
+DDD nedir?
+
+DDD business kurallarýyla dolu, karmaþýk projeleri yönetmeyi saðlayan tasarým. Amacý projeyi mantýksal olarak farklý BoundedContext'lere ayýrmak.
+DDD'de Ubiquitous Language önemlidir. Domain Expert ile Developer Team arasýndaki ortak dildir. Domain Expert ilgili konunun business 'ýna hakim uzman kiþidir. 
+	Bu 2 tarafýn iletiþim kurarken birbirini net olarak anlamasý, birinin fiþ dediðine diðerinin makbuz dememesidir. 2 taraf birbirini net þekilde anlýyor olmalý.
+Bounded Context: Ana domain altýndaki mantýksal olarak grupladýðýmýz yapýlardýr. Örneðin E-Ticaret altýndaki Sipariþ Yönetimi.
+
+4 Layer var.
+Presentation Layer: Ýstekleri aldýðýmýz, application layer'ýn kabul edeceði formatta isteði iletip, Application Layer'dan gelen cevabý dönmektir.
+Application Layer: Uygulamanýn merkezidir. Uygulamanýn yetenekleri, transaction yönetimi, entitylerin oluþturulup güncellenme iþlemleri bu katmandadýr.
+Domain Layer: Çözülmek Ýstenen soruna ait iþ kurallarýnýn tanýmlandýðý katmandýr. Entities, Value Objects, Aggregates, Factories ve Interfaces bu katmandadýr.
+Infrastructure Layer: Veritabaný, mesajlaþma sistemleri gibi dýþ servislere eriþilen katmandýr.
+
+Entity: Kendine ait unique bir kimliði olan, Id'si olan nesnelerdir. Örneðin Category.
+Value Objects: Kendisine ait unique kimliði olmayan, id'si olmayan nesnelerdir. Örneðin Address
+Aggregate Root: Birbiri ile alakalý entity lerin bir iþ kuralýný ya da akýþýný gerçekleþtirmek için bir arada kullanýlmasý durumu, Aggregate olarak tanýmlanýyor. 
+	Kendi baþlarýna sadece bir nesne olan entityler DDD de iþ paylaþýmý içerisinde transactional bir bütünlüðe eriþerek Aggregate oluþtururlar.
+	Bu yapý içerisinde diðer entity’ lerin koordinasyonunu saðlayacak bir yönetici entity seçilir. Bu seçim aggregate içindeki Aggregate Root u iþaret eder.
+	Örneðin Category içinde Product'ýn bir listesi var. Ben Category'i aggregate olarak belirliyorum. Product'ýn eklenme vs iþlemleri yönetici 
+	entity olan Category üzerinden gerçekleþecek. Burada Category Aggregate oluyor. Product entity'si içerisinde kesinlikle CategoryId olmamalý.
+
+Repository: Bir aggregate içerisindeki bütün entity ve value objectlerin taþýdýðý bilgilerin veritabanýna yazýlmasý amacýyla kullanýlan kavramdýr.
+
+
+CQRS Patterns ise;
+Karmaþýk ve trafiði çok olan projelerde Command ve Query'leri birbirinden ayýrmaya dayanýyor. Bu da bize performans artýþý saðlýyor ve yönetimi daha kolay.
+Burada Application Layer'da bu pattern'i kullanacaðýz.
+CQRS için MediatR kütüphanesini .NET CORE'da kullanabiliriz.
