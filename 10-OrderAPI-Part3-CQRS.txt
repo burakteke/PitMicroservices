@@ -1,0 +1,21 @@
+MediatR library kullanacaðýz. CQRS'te Command ve Query'ler ayrýlýyordu. Query ve Commandler ayrý handler ediliyor. 
+Query => Read
+Command => Create, Update, Delete
+
+Duruma göre spesific bir query için query handler yazýlýr ve handler içinde sadece spesific query handle edilebilir,
+	veya bir query handler içinde birden fazla query de handle edilebilir. Best practice her query için ayrý query handler oluþturmaktýr.
+
+CQRS'i Application'da uygulayacaðýz fakat Infrastructure layerda MediatR kütüphanesinin in memory event yapýsýný kullanabilir.
+Örneðin Infrs. layerda DbContext'te SaveChanges methodunu ezdik ve içinde event fýrlatýyoruz diyelim. Burada MediatR'a ihtiyaç olacak.
+2 layer'ýn da referansýna sahip olduðu Domain Layer'a eklersek bu 2layerda da kullanabilmiþ oluruz. Bu yüzden Domain Layer'a ekliyoruz.
+Burada eventlere nerede ihtiyaç olabilir? Aggragete'ler kendi arasýnda eventler ile haberleþebilir, BoundedContext'ler eventler ile haberleþebilir.
+Eventleri data eklendikten veya update edildikten sonra fýrlatýlabilir.
+
+Domain Layer'a MediatR'ý ekledik. DependencyInjection olan versiyonu ekledik.
+Application Layer'da; 
+	Queries klasörü altýnda GetOrdersByUserIdQuery class'ý oluþturduk. Bu query sýnýfýmýzdýr. Ýçinde hangi tipte döneceðimizi ve alacaðýmýz parametreyi belirtiyoruz.
+	Handlers klasörü altýnda GetOrdersByUserIdQueryHandler class'ýný oluþturduk. Bu handler sýnýfýmýzdýr. DB'ye gidip datayý alacaðýmýz sýnýf.
+
+	Commands klasörü altýnda CreateOrderCommand class'ý oluþturduk. Command sýnýfýmýzdýr.
+	Handlers klasörü altýnda CreateOrderCommandHadnler class'ýný oluþturduk. DB iþlemleri.
+	

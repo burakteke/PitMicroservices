@@ -26,7 +26,6 @@ Anemic Domain Model'de ise sadece property'ler var. Klasik bildiðimiz yöntem. bu
 
 	OrderAggregate/Address.cs oluþturuldu. Dýþarýdan müdahale olmasýn diye proplarýn setleri private yapýldý. constructor ile deðer alcaz.
 	Address ValueObject. Order içerisinde yer alcak fakat db'de bir tablo olarak yer almayacak ama kolonlarý Order tablosuna eklencek. 
-	Böyle address gibi tiplere Owner Entity Type deniyor. EFCore yükledikten sonra Address class'ý [Owner] ile iþaretlenir.
 
 	OrderAggregate/OrderItem.cs oluþturuldu. proplar private set yapýldý. ctor ile deðer alcaz. Bu deðerleri update için UpdateOrderItem methodu eklendi. 
 	Miras olarak Entity alýyor. DDD'den dolayý.
@@ -36,4 +35,22 @@ Anemic Domain Model'de ise sadece property'ler var. Klasik bildiðimiz yöntem. bu
 	Ekleme yapýlacaksa benim yazdýðým method üzerinden ekleme yapýlmalý. 
 	Çünkü ekleme yapýlan method benim kontrolümde olacak ve eklemenin benim kontrolüm altýndaki methoddan yapýlmasý gerek.
 	proplarý private set yapýp ardýndan ctor yazdýk.
-	orderitem eklemek için method yazdýk
+	orderitem eklemek için method yazdýk.
+
+	Önemli Not: Domain katmaný hangi ORM aracýný kullandýðýmýzý bilmemeli, herhangi bir kütüphaneye baðýmlý olmamalýdýr. Saf c# kodu bulunmalý sadece.
+
+4) OrderDBContext'i oluþturacaðýz. 
+	Infrastructre Layer'da EF Core ve EfCore.Tools (migrationiçin )yüklüyoruz.
+	SQL Server kullanacaðýmýz için EFCore.SqlServer da yükülyoruz.
+	Bu layerda OrderDbContext class'ýmý oluþturduk ve DbContext sýnýfýndan miras aldýrdýk.
+	ctor yazdýk ve options parametresi alýp base ctor a yolladýk.
+	Order ve OrderItem Entity'lerim için DbSet propertylerini tanýmladýk. Address için tanýmlamadýk, çünkü value object. Db karþýlýðý olmayacak.
+	OnModelCreating methodumuzu override ettik. Bunun için ToTable diyerek tablo ayarýný yaptýk. Price için decimal tipinin detayýný verdik 18,2
+		Ayrýca Address ValueObject olduðu için Order için OwnsOne Address diyerek OwnerType olduðunu bildirdik.
+
+5) Dto'larýmýzý oluþturuyoruz => AddressDto, OrderDto, OrderItemDto, CreatedOrderDto
+	Application katmanýnda oluþturuyoruz.
+
+6) AutoMapper ekliyoruz. ClassLibrary'de kullanacaðýmýz için Dependency Injection versiyonlu olmayan AutoMapper'ý ekledik.
+	Veritabanýndan aldýðýmýz verileri dto'ya çevirmede kullanacaðýz. CustomMapper'da maplenecek class'larý verdik. Class'ý mapping klasörü altýnda oluþturduk
+	Sadece istenildiði zaman maplemeyi yapacak olan (LAZY) ObjectMapper static class'ýný da oluþturuyoruz. 

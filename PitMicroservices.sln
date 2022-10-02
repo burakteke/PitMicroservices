@@ -18,9 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		05-PhotostockAPI.txt = 05-PhotostockAPI.txt
 		06-BasketAPI.txt = 06-BasketAPI.txt
 		07-DiscountAPI.txt = 07-DiscountAPI.txt
-		09-OrderAPI-Part2.txt = 09-OrderAPI-Part2.txt
-		Ports.txt = Ports.txt
 		08-OrderAPI-Part1-DDD-CQRS.txt = 08-OrderAPI-Part1-DDD-CQRS.txt
+		09-OrderAPI-Part2.txt = 09-OrderAPI-Part2.txt
+		10-OrderAPI-Part3-CQRS.txt = 10-OrderAPI-Part3-CQRS.txt
+		Ports.txt = Ports.txt
 		Yapılanlar.txt = Yapılanlar.txt
 	EndProjectSection
 EndProject
@@ -46,15 +47,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Discou
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{1771E60D-948D-4B58-8927-7768A335B6C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Services.Order.API", "Services\Order\FreeCourses.Services.Order.API\FreeCourses.Services.Order.API.csproj", "{4AAACD8A-32B6-4F0E-A5D1-242BD175C422}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Order.API", "Services\Order\FreeCourses.Services.Order.API\FreeCourses.Services.Order.API.csproj", "{4AAACD8A-32B6-4F0E-A5D1-242BD175C422}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Services.Order.Application", "Services\Order\FreeCourses.Services.Order.Application\FreeCourses.Services.Order.Application.csproj", "{A54C9B9E-679A-43F7-B27D-A902706925BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Order.Application", "Services\Order\FreeCourses.Services.Order.Application\FreeCourses.Services.Order.Application.csproj", "{A54C9B9E-679A-43F7-B27D-A902706925BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Services.Order.Domain", "Services\Order\FreeCourses.Services.Order.Domain\FreeCourses.Services.Order.Domain.csproj", "{D77207CE-1641-4C64-95B6-9BCE920C63A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Order.Domain", "Services\Order\FreeCourses.Services.Order.Domain\FreeCourses.Services.Order.Domain.csproj", "{D77207CE-1641-4C64-95B6-9BCE920C63A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Services.Order.Domain.Core", "Services\Order\FreeCourses.Services.Order.Domain.Core\FreeCourses.Services.Order.Domain.Core.csproj", "{FC17A0A3-6335-4A5E-A57E-7069A441261F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Order.Domain.Core", "Services\Order\FreeCourses.Services.Order.Domain.Core\FreeCourses.Services.Order.Domain.Core.csproj", "{FC17A0A3-6335-4A5E-A57E-7069A441261F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Services.Order.Infrastructure", "Services\Order\FreeCourses.Services.Order.Infrastructure\FreeCourses.Services.Order.Infrastructure.csproj", "{7F2273D1-E43A-4BC2-957C-FA4FF1516B5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Services.Order.Infrastructure", "Services\Order\FreeCourses.Services.Order.Infrastructure\FreeCourses.Services.Order.Infrastructure.csproj", "{7F2273D1-E43A-4BC2-957C-FA4FF1516B5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
