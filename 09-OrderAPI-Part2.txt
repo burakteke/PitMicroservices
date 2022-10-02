@@ -45,7 +45,7 @@ Anemic Domain Model'de ise sadece property'ler var. Klasik bildiðimiz yöntem. bu
 	Bu layerda OrderDbContext class'ýmý oluþturduk ve DbContext sýnýfýndan miras aldýrdýk.
 	ctor yazdýk ve options parametresi alýp base ctor a yolladýk.
 	Order ve OrderItem Entity'lerim için DbSet propertylerini tanýmladýk. Address için tanýmlamadýk, çünkü value object. Db karþýlýðý olmayacak.
-	OnModelCreating methodumuzu override ettik. Bunun için ToTable diyerek tablo ayarýný yaptýk. Price için decimal tipinin detayýný verdik 18,2
+	OnModelCreating methodumuzu override ettik. Bunun için ToTable diyerek tablo db karþýlýklarý ayarýný yaptýk. Price için decimal tipinin detayýný verdik 18,2
 		Ayrýca Address ValueObject olduðu için Order için OwnsOne Address diyerek OwnerType olduðunu bildirdik.
 
 5) Dto'larýmýzý oluþturuyoruz => AddressDto, OrderDto, OrderItemDto, CreatedOrderDto

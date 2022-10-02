@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		08-OrderAPI-Part1-DDD-CQRS.txt = 08-OrderAPI-Part1-DDD-CQRS.txt
 		09-OrderAPI-Part2.txt = 09-OrderAPI-Part2.txt
 		10-OrderAPI-Part3-CQRS.txt = 10-OrderAPI-Part3-CQRS.txt
+		11-OrderAPI-Part4.txt = 11-OrderAPI-Part4.txt
 		Ports.txt = Ports.txt
 		Yapılanlar.txt = Yapılanlar.txt
 	EndProjectSection

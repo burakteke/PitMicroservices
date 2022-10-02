@@ -1,0 +1,35 @@
+1) Container SqlServer
+	SqlServer Veritabanýný linux container olarak ayaða kaldýrýyoruz.
+	orderdb | Password12* | host port:1444 container port:1433 | deploy ediyoruz.
+
+2) Migration Settings;
+	appsettings.json'a connStringi ekliyoruz.
+	program.cs'e AddDbContext ile orderdbcontext'i ekliyoruz. useSqlServer ile sqlserver baðlantýmýzý da veriyoruz dbcontext'e.
+	Migration assembly'mizin DbContext'in olduðu yer olan Infrastructre layerda olmasý için AddDbContext'in içerisinde options içinde belirtiyoruz.
+	Migration initial için Order.API'ye Microsoft.EntityFrameWorkCore.Design'ý ekliyoruz.
+	Bir de Order'a custom bir constructor tanýmlamýþtýk ve parametre alýyordu. Migration iþlemlerinin olabilmesi için parametre almayan bir ctor de eklemek lazým Order Entity'e
+	OrderItem için de default ctor ekliyoruz.
+
+3) Migration Commands;
+	Package Manager Console'a giriyoruz. Default Project olacak Order.Infrastructure'ý seçiyoruz.
+	
+	add-migration initial // migration oluþturduk
+	update-database // migration'ý db'ye yansýttýk
+	
+4) OrdersController'ý oluþturduk
+	Application layerdaki handle'lara command ve queryleri yollayabilmek için MediatR'ý controller'a field olarak tanýmladýk. Ctor ile aldýk.
+	IMediator ISharedIdentityService(token içinden sub'ý almak için oluþturmuþtuk) DI olarak alabilmek için program.cs'e ekliyoruz.
+		Ama bundan önce builder.Services.AddHttpContextAccessor(); eklemek gerekiyor. Çünkü SharedIdentityService HttpContext kullanýyor.
+	GetOrders ve SaveOrder methodlarýný handle'larý tetikleyecek þekilde oluþturduk.
+
+5) Projeyi koruma altýna alma.
+	Bu microservice'mizde de ResourceOwnerPassword type'lý token gerektiriyor.
+	* JwtBearer kütüphanesini dahil ediyoruz Nuget
+	* IdentityServer configte scope, resource ve client'lara OrderAPI için yeni tanýmlarý ekliyoruz.
+	* Basket API'de yaptýðýmýz gibi 
+		authorizepolicy, jwtSecurity.Remove("sub"), Services.AddAuthenticayion satýrlarýný kopyalarak alýyoruz. Audince'e identityserver'a eklediðimiz yeni tanýmý verdik.
+	* appsettings.json dosyasýna IdentityServerURL bilgisini verdik.
+	* program.cs içinde AddControllers içine Authorize Filter ve authorizepolicymizi veriyoruz ve en alta app.UseAuthentication(); ekliyoruz
+	
+6) POSTMAN TEST
+	
