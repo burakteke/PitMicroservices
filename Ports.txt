@@ -4,4 +4,5 @@ Services
 	-basket		=> 5013
 	-discount	=> 5014
 	-order		=> 5015
+	-fakepayment => 5016
 -identityserver => 5001
