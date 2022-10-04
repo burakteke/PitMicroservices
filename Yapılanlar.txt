@@ -6,3 +6,4 @@ SQLServer,Redis, PostgreSQL ve MongoDB docker'da container olarak ayaða kaldýrýl
 Postman ile identityServer ve API testleri yapýlýyor.
 OrderAPI'de DDD ve CQRS kullanýlýyor.
 Dapper kullanýldý (Discount)
+Gateway (OCELOT LIBRARY)

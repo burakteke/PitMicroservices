@@ -1,0 +1,32 @@
+Gateway: Client'tan gelen isteði ilgili microservice'e yönlendirme iþini yapýyor.
+OCELOT LIBRARY kullanacaðýz.
+
+Gateway'in avantajlarý;
+
+Gateway client ile microservice'lerimin arasýnda bulunan bir yapý olduðu için;Authorization, Caching, Logging, Rate Limiting, Load Balance gibi iþlemleri burada yapabilirim.
+Client'ýn microservice'lerin url port vs bilgisini bilmesine gerek kalmaz.
+Token geçerli mi imzalý mý gibi konular microservice'e gitmeden gatewayden dönmüþ olur. Bu sayede microserviceler meþgul edilmemiþ olur.
+
+Projeyi oluþturuyoruz. Gateways altýnda Empty bir .NET Core oluþturuyoruz. Portu 5000 olarak ayarlýyoruz.
+nugetten ocelet library'i ekledik.
+program.cs'e addOcelot'u services'ý ekledik. await app.UseOcelot(); ekledik.
+
+Ýstek geldiðinde hangi microservice'e yönlendirileceðini belirteceðimiz Configuration dosyalarýný ekliyoruz.
+Configuration.development.json
+Configuration.production.json //dockerize için
+
+program.cs'te add.json file eklemesi yaptýk.
+
+configuration.development.json'ý kodladýk
+upstream gateway'e gelen istek, downstream microservice'e gidecek olan istek
+
+identityserver korumasý altýna alýyoruz.
+1) identityserver config'e gateway için tanýmlamalarý ekledik.
+2) appsettings' e identityServerUrl ekledik.
+2) gateway programcs'te
+	services AddAuthentication ve blok içini ekledik.
+
+
+örneðin catalogapiye istek atmak için token'da resource_catalog scope'u olmasý gerekiyor. Eðer bu scope'a sahip deðilse catalogapiye gereksiz yere yönlendirmemek lazým.
+Bu yüzden configuration.development'a authenticationoptions 'ý dahil ediyoruz.
+	"AuthenticationOptions": {"AuthenticationProviderKey": "GatewayAuthenticationScheme", /*program.cs'te belirttiðimiz scheme*/ "AllowedScopes": ["catalog_fullpermission"]
