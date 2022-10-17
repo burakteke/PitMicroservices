@@ -1,0 +1,44 @@
+Þu ana kadar identityServer, microserviceler ve gateway'imizi yazdýk. Asenkron ve senkron iþlemlere hiç girmedik. Client tarafýnda buralara gireceðiz.
+Senkron iþlem => istek yapýp sonucunu bekleriz Asenkron iþlem => istek yapýp sonucu beklememek.
+
+Gateway'den Order, Catalog, Basket senkron iletiþim olacak.
+Catalog => Photostock | Order => FakePayment | Basket => Discount senkron iletiþim olacak.
+Order => RabbitMQ | Catalog => RabbitMQ asenkron iletiþim. Örnekler çoðaltýlabilir.
+
+Þimdi ASP.NET Core MVC kullanarak tüm microservice'lerimizi kullanabileceðimiz bir client yazacaðýz.
+
+A) COOKIE-BASED AUTHENTICATION/AUTHORIZATION
+Senaryo: Kullanýcý login ekranýna email password girdikten sonra bunu identityServer'a yolluyoruz. Resource owner password tipinde bir token döndü.
+	Bu token içinde access ve refresh token bulunuyor. Bunlarý cookie'ye kaydediyoruz. Çünkü diðer service'lere istek atmak için access ve refresh token'a ihtiyaç var.
+	Her seferinde identityServer'dan çekmemek için cookie'ye atýyoruz. 
+	ASP.NET Core MVC yerine Single Page Application Client kullansaydýk bunu localStorage'a koyacaktýk.
+
+	Bir de identityserverdan kullanýcý bilgilerini, rollerini yani claimleri dönecek olan UserInfo endpointi var. 
+	Kýsaca oluþturulacak olan token içinde access token, refresh token ve claims olacak. Bunlarý cookie'leyeceðiz.
+
+B) PROJEYÝ OLUÞTURUYORUZ.
+	ASP.NET Core MVC seçiyoruz. Port olarak 5010 portunu ayarlýyoruz. 
+	
+C) IIdentityService ve IdentityModel Library. 
+	Service'in 3 tane methodu olacak. 
+	SignIn  = kullanýcý ve parolayý identityServer'a gönderecek ve token alacak.
+	GetAccessTokenByRefreshToken = AccessToken ömrü dolduðu zaman refresh token'ý kullanarak yenileyeceðiz.
+	RevokeRefreshToken = Signout olduðu zaman refresh token'ý sýfýrlayacaðýz.
+
+	Services/Interfaces altýnda IIdentityService tanýmladýk. Shared librarymizi reference aldýk.
+	IdentityModel'i Nugetten aldýk.
+	Yukarýda bahsettiðimiz methodlarýn imzasýný yazdýk.
+	SignIn methodu için kullanýcýdan alacaðýmýz veriler için Models altýnda SignInInput class'ý oluþturduk.
+
+	Appsettings.json dosyasýný okumak için Models altýnda ServiceApiSettings classýný oluþturuyoruz. DI ile alabilmek için (Options pattern)
+	Bu class'ýn karþýlýðý olarak ayný keyleri appsettings'e ekliyoruz.
+	program.cs'te builder.Services.Configure<ServiceApiSettings>(builder.Configuration.GetSection("ServiceApiSettings")); ekledik DI için
+
+D) CLIENT SETTÝNGS
+	AppSettings'te ClientSettings section'ýný ekledik.
+	ClientId ve ClientSecret tutacaðýmýz bir ClientSettings class'ýný ekledik. Token'ýn ResourceOwnerPassword tipinde mi yoksa Credentials tipinde mi olduðunu tutacaðýmýz yer.
+	Client class'ýný da ekledik.
+	Program.cs 'te services.Configure diyerek uygulamaya bildiriyoruz yine DI için.
+	
+E) IdentityService class'ýný oluþturacaðýz. IIdentityService'i implement edecek. SignInMethodunu yazacaðýz.
+	Services altýnda IdentityService class'ýný oluþturuyoruz.
