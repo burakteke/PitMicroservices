@@ -41,4 +41,11 @@ D) CLIENT SETTÝNGS
 	Program.cs 'te services.Configure diyerek uygulamaya bildiriyoruz yine DI için.
 	
 E) IdentityService class'ýný oluþturacaðýz. IIdentityService'i implement edecek. SignInMethodunu yazacaðýz.
-	Services altýnda IdentityService class'ýný oluþturuyoruz.
+	Services altýnda IdentityService class'ýný oluþturuyoruz. SignIn methodunu yazdýk.
+F) SignIn cshtml yazýlýyor
+	AuthController oluþturuldu. SignIn ActionMethod oluþturuldu. Sað týklayýp view'ý (SignIn.cshtml) eklendi. 
+	bootstrap'in sitesinden direkt html kopyalandý. (önce form submit ardýndan card kopyalandý) signin.cshtml email ve password alacak þekilde <form></form> eklendi.
+	layout.cshtml'e sað üste giriþ yap butonu konuldu ve yönlendirme saðlandý.
+	AuthController'a post signIn methodu ekledik. DI ile identityService'i aldýk.
+	HttpAccessor ve HttpClient program'cs e DI olarak ekledik.
+	
