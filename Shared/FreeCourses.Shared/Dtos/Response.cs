@@ -7,13 +7,13 @@ namespace FreeCourses.Shared.Dtos
 {
     public class Response<T>
     {
-        public T Data { get; private set; }
+        public T Data { get; set; }
         [JsonIgnore]
         //Sadece REST bir apiye istek yapıldığında response'da Status Code görülebiliyor. Bu yüzden bir daha response olarak StatusCode dönmeye gerek yok. Bu yüzden ignore
         //Ama Yazılım içinde bu property'den faydalanmamız gerekecek. Bu yüzden backend'e eklemiş olduk.
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; set; }
         [JsonIgnore]
-        public bool IsSuccessful { get; private set; }
+        public bool IsSuccessful { get; set; }
         public List<string> Errors { get; set; }
 
         //static factory method

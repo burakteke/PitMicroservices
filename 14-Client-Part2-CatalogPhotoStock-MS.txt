@@ -31,3 +31,19 @@ builder.Services.AddHttpClient<ICatalogService, CatalogService>(opt =>
 });
 
 Artýk CatalogService içini doldurabiliriz.
+
+program.cs'e ISharedIdentityService'ý ekliyoruz addscoped
+
+CouseController'ý oluþturuyoruz ve Index'i oluþturuyoruz (view)
+@using FreeCourses.Web.Models.Catalogs bunu ViewImports a ekliyoruz. Her view'a ayrý ayrý bu namespace'i geçmemek için.
+Bu indexte ilgili User'la alakalý course'lar microservice'ten çekilecek ve gösterilecek.
+
+Ýstek için ClientCredentials bir token'a ihtiyaç var. Ýsteði kesip, isteðimize token ekleyen bir delegate yazýyoruz. 
+ResourceOwnerPassword tipi için yazmýþtýk. Bir de clientCredentials için yazýyoruz.
+Delegate yazmadan önce token alacak olan ClientCredentialTokenService service'ini yazýyoruz. (Interface dahil)
+ResourceOwner token'ýný cookie'de tutuyorduk. ClientCredential'ý memory'de tutcaz. IdentityModel.AspNetCore paketini yükledik. 
+Bunun içinde zaten IdentityModel geldiði için önceden eklediðimizi kaldýrýyoruz.
+program.cs'e ekliyoruz. builder.Services.AddHttpClient<IClientCredentialTokenService, ClientCredentialTokenService>();
+
+Artýk delegate'i yazabiliriz. ClientCredentialTokenHandler ekliyoruz. Ýsteði kesip, isteðe token'ý ekleyecek.
+Bunu program.cs'e ekledik.
