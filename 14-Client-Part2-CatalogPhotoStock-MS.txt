@@ -1,0 +1,33 @@
+MVC uygulamamýz ile Microservice'lerimiz artýk haberleþiyor olacaklar. Ýlk aþamada Catalog API ve Photostock API ile haberleþeceðiz. Catalog API ve Photostock API User bilgisi beklemediði için Client Credentials tipinde bir token yeterli olacaktýr istek atabilmek için, logine gerek yok.
+
+CatalogAPI'yle ve PhotostockAPI'yle senkron iletiþimde olacaðýz. Gelen cevabý bekleyip göstereceðiz.
+
+Farklý bir senaryoda ise Photostock API ile fotoðraf eklemek istiyoruz diyelim. Bu fotoðrafýn sað alt tarafýna WaterMark (yani örneðin fotoðrafýn sað altýna PitMicroservice gibi bir imza eklemek gibi) eklemek istiyoruz diyelim. Burada Asenkron iletiþim kullanabiliriz. Uzun bir iþlem olduðu için asenkron yapýyoruz.
+Öncelikle senkron olarak tasarlayacaðýz. Bütün microserviceler ile senkron iletiþimi tamamladýktan sonra asenkron olmasý gerekenleri tekrar kurgulayacaðýz. Ýlk önce senkron kodluyoruz.
+
+Asenkron iletiþimde kurgu þöyle ilerleyecek. 
+1) Fotoðraf MVC'den PhotostockAPI'ye kaydolacak.
+2) Kaydolma iþleminden sonra fotoðrafýn adýný uzantýsýný vs RabbitMQ'ya yollyuoruz.
+3) Bu kuyruðu dinleyen; WaterMark ekleme iþlemiyle sorumlu olan bir WorkerService Photostock'tan bu fotoðrafý çekiyor, watermark ekliyor ve ardýndan photostock'a kaydediyor.
+
+1) Kurslarý çektiðimizde CourseDto.cs tipinde bir dönüþ oluyor. Model altýnda CourseViewModel adýnda; bu dtoyu karþýlayacak bir ViewModel ekliyoruz. Ayný þekilde önce FeatureViewMode ve CategoryViewModellerimizi de ekliyoruz.
+
+Create için CourseCreateInput
+Update için CourseUpdateInput classlarýný ekledik.
+
+Services/Interfaces altýna ICatalogService ekliyoruz.
+Services altýnda CatalogService ekliyoruz. Miras alýyoruz. Methodlarý içi not implemented olarak yazýyoruz.
+
+CatalogService'in appsettings entegrasyonunu yapýyoruz.
+Gateway'de BaseUrl olarak localhost 5000 belirlemiþtik.
+Path olarak /services/catalog/{everthing} belirlemiþtik.
+
+appsettings'e "Catalog" için tanýmlamalar ekledik. Bunu yapma amacýmýz CatalogAPI'ye istek Gateway'den gidecek. Bu yüzden isteðin gateway üzerinden doðru yolla gidebilmesi adýna bu ayarlarý yapýyoruz.
+ServiceApiSettings.cs'ye yeni bir class ekledik. Catalog için
+program.cs'e AddHttpCLient ile catalogservice'i ekleidk.
+builder.Services.AddHttpClient<ICatalogService, CatalogService>(opt =>
+{
+    opt.BaseAddress = new Uri($"{serviceApiSettings.GatewayBaseUri}/{serviceApiSettings.Catalog.Path}");
+});
+
+Artýk CatalogService içini doldurabiliriz.

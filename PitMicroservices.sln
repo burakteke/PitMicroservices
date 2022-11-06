@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Gateway", "Free
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnds", "FrontEnds", "{1B24D5C3-69A0-4779-9F60-99E3E849EED6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeCourses.Web", "FrontEnds\FreeCourses.Web\FreeCourses.Web.csproj", "{B0E19F64-8B8D-43EE-8605-39C27D736A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreeCourses.Web", "FrontEnds\FreeCourses.Web\FreeCourses.Web.csproj", "{B0E19F64-8B8D-43EE-8605-39C27D736A22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
