@@ -47,3 +47,14 @@ program.cs'e ekliyoruz. builder.Services.AddHttpClient<IClientCredentialTokenSer
 
 Artýk delegate'i yazabiliriz. ClientCredentialTokenHandler ekliyoruz. Ýsteði kesip, isteðe token'ý ekleyecek.
 Bunu program.cs'e ekledik.
+
+CourseController'da Create yazalým. Bunun view'ýný da ekledik.
+CourseCreateInput için required ve türkçeleþtirme eklendi.
+CourseController'da Create Post yazalým.
+
+CourseController Update - HttpGet yazalým. View'ýný ekleyelim.
+CourseController'da submit için Update yazalým.
+
+CourseController'da Delete - HttpGet yazalým. 
+
+Index'e kurs güncelle, sil ve oluþtur butonlarý konuldu.
