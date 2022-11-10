@@ -1,0 +1,8 @@
+Interfaces altýnda IPhotoStockService oluþturuyoruz. 
+
+Microservice'te foto ekleidkten sonra PhotoDto döndüðümüz için PhotoViewModel ekliyoruz.
+IPhotoStockService Ýçine UploadPhoto methodunu ekliyoruz. DeletePhoto methodunu ekliyoruz.
+
+PhotoStockService ekliyoruz ve miras alýyoruz. 
+appsettingste PhotoStock için path ayarý veriyoruz. ServiceApiSettings'e de ekleme yaptýk photostock için. Ve son olarak program.cs'te bununla ilgili ekleme yapýyoruz.
+Bu ayarlarý program.cs'te httpClient'a yaptýðýmýz için PhotoStock serviste HttpClient üzerinden post vs gönderdiðimizde bu yaptýðýmýz ayarlardan otomatik olarak pathini ayarlýyor.
